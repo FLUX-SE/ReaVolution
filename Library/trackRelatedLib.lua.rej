@@ -1,0 +1,100 @@
+diff a/Library/trackRelatedLib.lua b/Library/trackRelatedLib.lua	(rejected hunks)
+@@ -378,4 +378,97 @@
+   for k, v in pairs(arr) do
+     reaper.SetMediaTrackInfo_Value( v, "I_SELECTED" , 1 )
+   end
++end
++
++function selectNextVisibleTrack()
++  local lastTouchTrack = reaper.GetLastTouchedTrack()
++  local folderDepth = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "I_FOLDERDEPTH")
++  local totalTrack = reaper.CountTracks( 0 )
++  if folderDepth == 1 and reaper.GetMediaTrackInfo_Value(lastTouchTrack, "I_FOLDERCOMPACT") > 0 then
++    local trID = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "IP_TRACKNUMBER")
++    local tr = reaper.GetTrack(0, trID)
++    folderDepth = folderDepth + reaper.GetMediaTrackInfo_Value(tr, "I_FOLDERDEPTH")
++    while folderDepth > 0 do
++      trID = trID + 1
++      tr = reaper.GetTrack(0, trID)
++      folderDepth = folderDepth + reaper.GetMediaTrackInfo_Value(tr, "I_FOLDERDEPTH")
++      if trID == totalTrack-1 then
++        break
++      end
++    end
++    tr = reaper.GetTrack(0, trID+1)
++    tr = tr or lastTouchTrack
++    reaper.Main_OnCommandEx(40297, 0, 0) -- Track: Unselect all tracks
++    reaper.SetMediaTrackInfo_Value(tr, "I_SELECTED" , 1)  
++  else
++    reaper.Main_OnCommandEx(40285, 0, 0) -- select next track
++  end
++end
++
++function selectPrevVisibleTrack()
++  local lastTouchTrack = reaper.GetLastTouchedTrack()
++  local folderDepth = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "I_FOLDERDEPTH")
++  if folderDepth <= 0 then
++    local trID = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "IP_TRACKNUMBER") - 2
++    local tr = reaper.GetTrack(0, trID)
++    if tr then
++      folderDepth = folderDepth + reaper.GetMediaTrackInfo_Value(tr, "I_FOLDERDEPTH")
++      local parentTrack = reaper.GetParentTrack(tr)
++      if parentTrack then
++        if reaper.GetMediaTrackInfo_Value(parentTrack, "I_FOLDERCOMPACT" ) > 0 then
++          tr = parentTrack
++          parentTrack = reaper.GetParentTrack( tr )
++        end
++      end
++    end
++    tr = tr or lastTouchTrack
++    reaper.Main_OnCommandEx(40297, 0, 0) -- Track: Unselect all tracks
++    reaper.SetMediaTrackInfo_Value(tr, "I_SELECTED" , 1)  
++  else
++    reaper.Main_OnCommandEx(40286, 0, 0) -- select prev track
++  end
++end
++
++function selectNextVisibleTrack_Mixer()
++  local lastTouchTrack = reaper.GetLastTouchedTrack()
++  local folderDepth = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "I_FOLDERDEPTH")
++  if folderDepth == 1 then
++    local trID = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "IP_TRACKNUMBER")
++    local tr = reaper.GetTrack(0, trID)
++    while reaper.GetMediaTrackInfo_Value(tr, "I_MCPW") == 0 do
++      trID = trID + 1
++      tr = reaper.GetTrack(0, trID)
++      if tr == nil then
++        break
++      end
++    end
++    tr = tr or lastTouchTrack
++    reaper.Main_OnCommandEx(40297, 0, 0) -- Track: Unselect all tracks
++    reaper.SetMediaTrackInfo_Value(tr, "I_SELECTED" , 1)
++  else
++    reaper.Main_OnCommandEx(40285, 0, 0) -- select next track
++  end
++end
++
++function selectPrevVisibleTrack_Mixer()
++  local lastTouchTrack = reaper.GetLastTouchedTrack()
++  local folderDepth = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "I_FOLDERDEPTH")
++  if folderDepth <= 0 then
++    local trID = reaper.GetMediaTrackInfo_Value(lastTouchTrack, "IP_TRACKNUMBER")-2
++    local tr = reaper.GetTrack(0, trID)
++    if tr then
++      while reaper.GetMediaTrackInfo_Value(tr, "I_MCPW") == 0 do
++        trID = trID - 1
++        tr = reaper.GetTrack(0, trID)
++        if trID == 0 then
++          break
++        end
++      end
++    end
++    tr = tr or lastTouchTrack
++    reaper.Main_OnCommandEx(40297, 0, 0) -- Track: Unselect all tracks
++    reaper.SetMediaTrackInfo_Value(tr, "I_SELECTED" , 1)
++  else
++    reaper.Main_OnCommandEx(40286, 0, 0) -- select prev track
++  end
+ end
+\ No newline at end of file

@@ -1,0 +1,206 @@
+desc: Audio Stream
+
+in_pin:none
+
+slider1:streamType=0<0,8,1{Channel Based,MS,A-Format,B-Format,UHJ,HOA 2D,HOA 3D,Binaural,Transaural}>-Stream type
+slider2:chNumber=1<1,64,1>-Number of channel
+slider3:forceOddChCount=1<0,1,1{No,Yes}>-Force odd number
+
+options:no_meter
+
+@init
+
+//Set reference HOA 2D order number of channel
+hoa2D=1234;
+hoa2D[1]=3;
+hoa2D[2]=5;
+hoa2D[3]=7;
+hoa2D[4]=9;
+hoa2D[5]=11;
+hoa2D[6]=13;
+hoa2D[7]=15;
+
+//Set reference HOA 3D order number of channel
+hoa3D=12346;
+hoa3D[1]=4;
+hoa3D[2]=9;
+hoa3D[3]=16;
+hoa3D[4]=25;
+hoa3D[5]=36;
+hoa3D[6]=49;
+hoa3D[7]=64;
+
+maxSpkArr = 64;
+spkArr = 1;
+
+function calculateSpeakerArray(newValue)(
+    streamType == 0 ? (
+      //forceOddChCount ? spkArr = newValue-1 : spkArr = newValue;
+      spkArr = newValue;
+    );
+    streamType == 5 ? (
+      i = 7;
+      while (
+        newValue >= hoa2D[i] ? (spkArr = hoa2D[i]; i=0;) : i-=1;
+        i >= 1;
+      );
+    );
+    streamType == 6 ? (
+      i = 7;
+      while (
+        newValue >= hoa3D[i] ? (spkArr = hoa3D[i]; i=0;) : i-=1;
+        i >= 1;
+      );
+    );
+    spkArr;
+  );
+  
+function setChNumber(newValue) (streamType == 0 ? chNumber = newValue - forceOddChCount : chNumber = newValue);
+
+function setStringDisplay(chNumber) (
+  stringDisplay = #stringDisplay;
+  
+  // if channel based stream
+  streamType == 0 ? (
+    chNumber == 1 ? (stringDisplay = "mono";);
+    chNumber == 2 ? (stringDisplay = "stereo";);
+    chNumber >= 3 ? (sprintf(stringDisplay, "%{chNumber}d");#stringDisplay += " ch" );
+  );
+  // if MS
+  streamType == 1 ? (
+    stringDisplay = "MS";
+  );
+  // if A-Format
+  streamType == 2 ? (
+    stringDisplay = "A-Format";
+  );
+  // if B-Format
+  streamType == 3 ? (
+    stringDisplay = "B-Format";
+  );
+  // if UHJ
+  streamType == 4 ? (
+    stringDisplay = "UHJ";
+  );
+  // if HOA 2D
+  streamType == 5 ? (
+    // Calculate and generate stringDisplay
+    order = (chNumber-1)/2;
+    sprintf(stringDisplay, "%{order}d");#stringDisplay += " HOA 2D";
+  );
+  // if HOA 3D
+  streamType == 6 ? (
+    // Calculate and generate stringDisplay
+    order = sqrt(chNumber)-1;
+    intOrder = ceil(order);
+    while(order != intOrder) (
+      chNumber +=1;
+      order = sqrt(chNumber)-1;
+      );
+    order < 1 ? order = 1;
+    sprintf(stringDisplay, "%{order}d");#stringDisplay += " HOA 3D";
+  );
+  // if Binaural
+  streamType == 7 ? (
+    stringDisplay = "Binaural";
+  );
+  // if Transaural
+  streamType == 8 ? (
+    stringDisplay = "Transaural";
+  );
+  stringDisplay;
+);
+
+@slider
+newOdd = slider3;
+
+streamType == 0 ? ( chNumber > maxSpkArr ? chNumber =  maxSpkArr; newOdd  != oldOdd    ? chNumber -= newOdd; );
+streamType == 2 || streamType == 3 || streamType == 4 ? ( chNumber = 4 );
+streamType == 5 ? ( chNumber > maxSpkArr ? ( chNumber = calculateSpeakerArray(maxSpkArr)) : chNumber = calculateSpeakerArray(chNumber); chNumber < 3 ? chNumber = 3 );
+streamType == 6 ? ( chNumber > maxSpkArr ? ( chNumber = calculateSpeakerArray(maxSpkArr)) : chNumber = calculateSpeakerArray(chNumber); chNumber < 4 ? chNumber = 4 );
+streamType == 1 || streamType == 7 || streamType == 8 ? ( chNumber = 2 );
+
+oldOdd = newOdd;
+
+
+setStringDisplay(chNumber);
+
+@block
+
+//currNumCh = num_ch;
+//currNumCh != lastNumCh ? ( nValue = calculateSpeakerArray(num_ch); setChNumber(nValue); maxSpkArr = nValue; );
+//currChNumber = getChNumber();
+//num_ch < chNumber+1 ? setChNumber(num_ch);
+
+setStringDisplay(chNumber);
+//lastNumCh = currNumCh;
+
+@gfx 480 80
+
+// override drawing functions for graphical window scaling
+gsc = min(gfx_w/480,gfx_h/236); igsc = 1.5/gsc;
+gxo = max(0,  gfx_w/2 - gfx_h*480/236/2);
+
+function gfx_lineto(x,y,aa) ( gfx_x*=gsc; gfx_y*=gsc; gfx_x+=gxo; 
+     gfx_lineto(x*gsc+gxo,y*gsc,aa); gfx_x-=gxo; gfx_x*=igsc; gfx_y*=igsc; );
+
+function gfx_rectto(x,y)(gfx_x*=gsc; gfx_y*=gsc; gfx_x+=gxo; gsc>.5 ? 
+     gfx_rectto(x*gsc+gxo,y*gsc); gfx_x-=gxo;  gfx_x*=igsc; gfx_y*=igsc; );
+
+function gfx_drawnumber(y,x) (
+  gsc>.5 ? (
+    gsc<.7 && x>1 ? x=1;
+    gfx_x*=gsc; gfx_y*=gsc; gfx_x+=gxo; gfx_drawnumber(y,x); gfx_x-=gxo;  gfx_x*=igsc; gfx_y*=igsc; 
+  );
+);
+
+function gfx_drawchar(x) (gsc>.5 ? gfx_drawchar(x););
+function gfx_drawstr(x) (gsc>.5 ? gfx_drawstr(x););
+function gfx_printf(x,y) ( gsc>.5 ? gfx_printf(x,y); );
+function gfx_arc(x, y, r, a1, a2, aa) (gsc>.5 ? gfx_arc(x, y, r, a1, a2, aa) : gfx_arc(x, y, r, a1, a2, 0); );
+
+rectR = rectG = rectB = 0;
+function setRgbColor(r, g, b) (rectR = r; rectG = g; rectB = b;);
+
+//chBased  color RGB   : 138 122  90 / 0.54 0.47 0.35
+//A-Format color RGB   : 138  70  65 / 0.54 0.27 0.25
+//B-Format color RGB   : 138  85  65 / 0.65 0.33 0.25
+//UHJ color RGB        : 138  62  65 / 0.65 0.24 0.25
+//HOA color RGB        : 141  72  28 / 0.55 0.28 0.11
+//MS color RGB         : 101 123  89 / 0.40 0.38 0.35
+//Binaural color RGB   : 124  86 139 / 0.49 0.34 0.55
+//Transaural color RGB :  99  86 139 / 0.39 0.34 0.55
+streamType == 0 ? (setRgbColor(0.54, 0.47, 0.35););
+streamType == 1 ? (setRgbColor(0.40, 0.38, 0.35););
+streamType == 2 ? (setRgbColor(0.54, 0.27, 0.25););
+streamType == 3 ? (setRgbColor(0.65, 0.33, 0.25););
+streamType == 4 ? (setRgbColor(0.65, 0.24, 0.25););
+streamType == 5 ? (setRgbColor(0.55, 0.28, 0.11););
+streamType == 6 ? (setRgbColor(0.55, 0.28, 0.11););
+streamType == 7 ? (setRgbColor(0.49, 0.34, 0.55););
+streamType == 8 ? (setRgbColor(0.39, 0.34, 0.55););
+
+//shortcut menu
+/*mouse_cap == 1 && mouse_in(0, 0, 480, 20) ? (
+  gfx_x = mouse_x;
+  gfx_y = mouse_y;
+  stringDisplay = "test";
+);*/
+
+
+//gfx_rect(0,0,480,80)
+gfx_gradrect(0,0,gfx_w,gfx_h, rectR,rectG,rectB,1);
+
+gfx_set(1, 1, 1, 1);
+gfx_setfont(1, "Arial", 16);
+
+stringW=stringH=0;
+gfx_measurestr(stringDisplay,stringW,stringH);
+
+yCenter = gfx_h-stringH;
+gfx_y = (yCenter*0.5)-1;
+xCenter = gfx_w-(stringW);
+gfx_x = xCenter*0.5;
+
+gfx_drawstr(stringDisplay,1);
+
