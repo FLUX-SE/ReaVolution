@@ -1,8 +1,5 @@
 # ReaVolution
 
-## Introduction
-
-This repository give access to all the script library use in ReaVolution.
 ## Credits & acknowledgements
 
 ReaVolution was developped by Jean-Loup Pecquais, between Orléans and Paris, from 2019 to 2020.
@@ -21,5 +18,21 @@ ReaVolution is built upon the following Reaper extensions :
 - JS API extension : [https://forum.cockos.com/showthread.php?t=212174](https://forum.cockos.com/showthread.php?t=212174)
 
 ReaVolution theme uses graphical elements provided to the Reaper community by the creator of the original Reaper 6 theme, White Tie.
-
 ## Introduction
+
+This repository give access to all the script and JSFX library use in ReaVolution.
+
+For an all-in-one package to download ReaVolution, check out the FLUX:: Immersive page dedicated to it here : .
+
+## Installation
+
+The content of the "Scripts" folder should go in the "Scripts" folder of your REAPER installation.
+
+The content of the "JSFX" folder should go in the "Effects" folder of your REAPER installation.
+
+## Dependencies
+
+You will need, for whatever script you want to use from this collection, to includes the one present in the "Library" folder.
+For making your life easier, we highly recommend you to preserve the folder architecture! This way, you are sure that all the scripts will work.
+
+If you want to use the "Audio Stream" JSFX, the "Scripts/Audiostream" folder contain all the command to interact with the software.
