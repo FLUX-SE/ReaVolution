@@ -20,13 +20,14 @@ end
 function getChannelsFromString( input )
 	local chNumber = 0
 	local counter = 0
+
 	for w in string.gmatch(input,"%d+") do
 		chNumber = chNumber + tonumber(w)
 		counter = counter + 1
 		if counter >2 then break end
 	end
 
-	if chNumber < 1 then chNumber = 1
+	if chNumber < 1 then chNumber = nil
 	elseif chNumber > 64 then chNumber = 64 end
 
 	return chNumber

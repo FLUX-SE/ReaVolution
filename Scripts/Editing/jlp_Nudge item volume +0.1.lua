@@ -15,7 +15,7 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 local selItem = reaper.CountSelectedMediaItems( 0 )
 for i = 0, selItem-1 do
-    local item = reaper.GetMediaItem( 0, i )
+    local item = reaper.GetSelectedMediaItem( 0, i )
     local itemVol = reaper.GetMediaItemInfo_Value( item, "D_VOL" )
     local gainDB = 0.1
     local gainLinear = 10^(gainDB/20)

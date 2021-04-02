@@ -18,16 +18,18 @@ function main()
 	local frames = 10
 	reaper.PreventUIRefresh(-1*frames)
 	
-	local retval, chNum = reaper.GetUserInputs( "Set to channel based", 1, "Enter a speaker arrangement: ", "")
-
+	local retval, chString = reaper.GetUserInputs( "Set to channel based", 1, "Enter a speaker arrangement: ", "")
+	local chNum = getChannelsFromString( chString )
+	
 	if retval == true then
-
+		
 		while tonumber(chNum) == nil do
 			local answer = reaper.ShowMessageBox("Please, enter a valid value", "Wrong value detected", 5)
 			if answer == 2 then
 				return
 			end
-			retval, chNum = reaper.GetUserInputs( "Set to channel based", 1, "Enter a speaker arrangement: ", "")
+			retval, chString = reaper.GetUserInputs( "Set to channel based", 1, "Enter a speaker arrangement: ", "")
+			chNum = getChannelsFromString( chString )
 			if retval == false then
 				return
 			end

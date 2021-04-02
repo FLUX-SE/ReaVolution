@@ -33,7 +33,7 @@ function main()
 			end
 		end
 
-		local chNum = getHOA2DCh( order )
+		local chNum = getHOA3DCh( order )
 
 	
 		local numTr = reaper.CountTracks(0)
