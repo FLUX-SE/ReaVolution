@@ -25,8 +25,8 @@ function main()
   local pathTheme = reaper.GetLastColorThemeFile()
   local _, pathTheme, _ = parseFilePath(pathTheme)
   
-  local hardwareOut = getNextAvailableHardwareOut() or 0
-  local numberOutput = reaper.GetNumAudioOutputs()
+  local hardwareOut = tonumber(reaper.GetExtState("ReaVolution","firstOutput")) or getNextAvailableHardwareOut() or 0
+  local numberOutput = tonumber(reaper.GetExtState("ReaVolution","lastOutput"))  or reaper.GetNumAudioOutputs()
 
   local frames = 10
   reaper.PreventUIRefresh(-1*frames)
@@ -93,7 +93,7 @@ function main()
             if hardwareOut < numberOutput and autoOutState == 1 and noMoreHardware == 0 then
               local outputIndex = reaper.CreateTrackSend( trSend, nil )
               reaper.SetTrackSendInfo_Value( trSend, 1, outputIndex, "I_DSTCHAN", hardwareOut+1024)
-              reaper.SetTrackSendInfo_Value( trSend, 1, outputIndex, "I_SRCCHAN", j+1024)
+              reaper.SetTrackSendInfo_Value( trSend, 1, outputIndex, "I_SRCCHAN", k+1024)
               hardwareOut = hardwareOut + 1
             elseif autoOutState == 1 then
               reaper.MB("No more hardware outputs available", "Error", 0)

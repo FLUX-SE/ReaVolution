@@ -48,10 +48,10 @@ function main()
   -- for each selected track..
   for i=0, selTr-1 do
     local tr = reaper.GetSelectedTrack(0, i)
-    local ch = reaper.GetMediaTrackInfo_Value(tr, "I_NCHAN") --Get number of channels
+    --local ch = reaper.GetMediaTrackInfo_Value(tr, "I_NCHAN") --Get number of channels
     reaper.SetMediaTrackInfo_Value(tr, "B_MAINSEND", 0) --Turn off send to master
 
-    local trTag = getTag( tr )
+    --local trTag = getTag( tr )
     local trStream = getStreamType( tr )
 
     local hardwareOut = getNextAvailableHardwareOut() or 0
@@ -66,7 +66,7 @@ function main()
       for i=0, #childArr-1 do
 
         local childTag = getTag(childArr[i+1])
-        local _, childNumCh = getNumberOfChannel(childArr[i+1]) --Get number of channels of child
+        local childNumCh = getNumberOfChannel(childArr[i+1]) --Get number of channels of child
 
 		  reaper.SetMediaTrackInfo_Value( tr, "B_MAINSEND", 0 )
 
