@@ -13,18 +13,15 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 -------------------------------------------------------------------------------------------------------------
 
-local x,y = reaper.GetMousePosition() -- get x,y of the mouuse
-local winUnderMouse = reaper.JS_Window_FromPoint(x, y)
-local title = reaper.JS_Window_GetTitle( winUnderMouse )
-local class = reaper.JS_Window_GetClassName( winUnderMouse )
+local title = reaper.BR_GetMouseCursorContext()
 
-if title == "trackview" then
+if title == "arrange" then
     -- reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_SELPREVITEM"), 0, 0) -- select prev item
     -- getNextTrackAcrossTrack()
-elseif title == "timeline" then
+elseif title == "ruler" then
     --
-elseif class == "REAPERMCPDisplay" then
+elseif title == "mcp" then
     reaper.Main_OnCommandEx(41665, 0, 0) -- show/hide children
-elseif class == "REAPERTCPDisplay" then
+elseif title == "tcp" then
     selectNextVisibleTrack()
 end

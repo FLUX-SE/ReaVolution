@@ -171,7 +171,7 @@ function main()
         end
         local spatSendFX = reaper.TrackFX_AddByName(trSend, "Spat Revolution - Send", false, -1)
         reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 57, (trNumCh-1)*0.015625)
-        sleep(0.1)
+        --sleep(0.1)
         if lapState == 1 then
           reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 51, 1)
         end

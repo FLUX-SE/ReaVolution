@@ -13,18 +13,15 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 -------------------------------------------------------------------------------------------------------------
 
-local x,y = reaper.GetMousePosition() -- get x,y of the mouuse
-local winUnderMouse = reaper.JS_Window_FromPoint(x, y)
-local title = reaper.JS_Window_GetTitle( winUnderMouse )
-local class = reaper.JS_Window_GetClassName( winUnderMouse )
+local title = reaper.BR_GetMouseCursorContext()
 
-if title == "trackview" then
+if title == "arrange" then
     -- getNextItemOnSelTr()
     reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_SELNEXTITEM"), 0, 0) -- select next item
-elseif title == "timeline" then
+elseif title == "ruler" then
     setEditCursorToNextMarker()
-elseif class == "REAPERMCPDisplay" then
+elseif title == "mcp" then
     selectNextVisibleTrack_Mixer()
-elseif class == "REAPERTCPDisplay" then
+elseif title == "tcp" then
     reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_UNCOLLAPSE"), 0, 0) -- cycle collapse folder
 end
