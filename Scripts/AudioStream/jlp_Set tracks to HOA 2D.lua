@@ -17,8 +17,8 @@ function main()
 
 local selTr = reaper.CountSelectedTracks()
 local retval, order = reaper.GetUserInputs( "Set to HOA 2D", 1, "Enter an order: ", "")
+local chNum = getHOA2DCh( order )
 	if retval then
-	local chNum = getHOA2DCh( order )
 		for i = 1, selTr do
 		  local tr = reaper.GetSelectedTrack(0,i-1)
 		  setAudioStream( tr, 5, chNum )

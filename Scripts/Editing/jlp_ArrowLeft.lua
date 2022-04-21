@@ -13,15 +13,15 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 -------------------------------------------------------------------------------------------------------------
 
-local title = reaper.BR_GetMouseCursorContext()
+local winUnderMouse, segUnderMouse, detUnderMouse = reaper.BR_GetMouseCursorContext()
 
-if title == "arrange" then
+if winUnderMouse == "arrange" then
     -- getPrevItemOnSelTr()
     reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_SELPREVITEM"), 0, 0) -- select prev item
-elseif title == "ruler" then
+elseif winUnderMouse == "ruler" then
     setEditCursorToPrevMarker()
-elseif title == "mcp" then
+elseif winUnderMouse == "mcp" then
     selectPrevVisibleTrack_Mixer()
-elseif title == "tcp" then
+elseif winUnderMouse == "tcp" then
     reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_COLLAPSE"), 0, 0) -- cycle collapse folder
 end

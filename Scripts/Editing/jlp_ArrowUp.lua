@@ -13,15 +13,15 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 -------------------------------------------------------------------------------------------------------------
 
-local title = reaper.BR_GetMouseCursorContext()
+local winUnderMouse, segUnderMouse, detUnderMouse = reaper.BR_GetMouseCursorContext()
 
-if title == "arrange" then
+if winUnderMouse == "arrange" then
     -- reaper.Main_OnCommandEx(reaper.NamedCommandLookup("_SWS_SELPREVITEM"), 0, 0) -- select prev item
     -- selectPrevVisibleTrack_JumpIfNoItems()
-elseif title == "ruler" then
+elseif winUnderMouse == "ruler" then
     --
-elseif title == "mcp" then
+elseif winUnderMouse == "mcp" then
     reaper.Main_OnCommandEx(41665, 0, 0) -- show/hide children
-elseif title == "tcp" then
+elseif winUnderMouse == "tcp" then
     selectPrevVisibleTrack()
 end

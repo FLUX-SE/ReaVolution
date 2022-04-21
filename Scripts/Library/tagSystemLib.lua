@@ -20,14 +20,13 @@ end
 function getChannelsFromString( input )
 	local chNumber = 0
 	local counter = 0
-
 	for w in string.gmatch(input,"%d+") do
 		chNumber = chNumber + tonumber(w)
 		counter = counter + 1
 		if counter >2 then break end
 	end
 
-	if chNumber < 1 then chNumber = nil
+	if chNumber < 1 then chNumber = 1
 	elseif chNumber > 64 then chNumber = 64 end
 
 	return chNumber
@@ -37,7 +36,8 @@ function getHOA2DCh( input )
 	local input = tonumber(input)
 	if input < 1 then input = 1
 	elseif input > 7 then input = 7 end
-		ch = 2*input+1
+	local ch = 2*input
+	ch = ch+1
 	return ch
 end
 
@@ -45,8 +45,8 @@ function getHOA3DCh( input )
 	local input = tonumber(input)
 	if input < 1 then input = 1
 	elseif input > 7 then input = 7 end
-		ch = input+1
-		ch = ch * ch
+	local ch = input+1
+	ch = ch * ch
 	return ch
 end
 

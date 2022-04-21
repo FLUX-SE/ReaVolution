@@ -19,6 +19,10 @@ function OnMouseDown()
   --reaper.ShowConsoleMsg("OnMouseDown\n")
   mouse.down=true ; mouse.capcnt=0
   mouse.ox,mouse.oy=gfx.mouse_x,gfx.mouse_y
+  local lastWindowUnderMouse, lastSegmentUnderMouse, lastDetailUnderMouse = reaper.BR_GetMouseCursorContext()
+  reaper.SetExtState('ReaVolution', 'lastWindowUnderMouse', lastWindowUnderMouse, true)
+  reaper.SetExtState('ReaVolution', 'lastSegmentUnderMouse', lastSegmentUnderMouse, true)
+  reaper.SetExtState('ReaVolution', 'lastDetailUnderMouse', lastDetailUnderMouse, true)
 end
 
 function OnMouseDoubleClick()
