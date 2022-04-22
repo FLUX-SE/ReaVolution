@@ -19,6 +19,7 @@ function main()
   local thruState =  tonumber(reaper.GetExtState( "ReaVolution", "Default thru" ))
   local autoOutState =  tonumber(reaper.GetExtState( "ReaVolution", "Automatic routing" ))
   local masterSendState =  tonumber(reaper.GetExtState( "ReaVolution", "Send_No master send" ))
+  local createNewObjectTracks = tonumber(reaper.GetExtState( "ReaVolution", "Send_CreateObjectTracks" ))
 
   local noMoreHardware = 0
 
@@ -26,7 +27,13 @@ function main()
   local _, pathTheme, _ = parseFilePath(pathTheme)
   
   local hardwareOut = getNextAvailableHardwareOut() or 0
+  local maxHardwareOut = tonumber(reaper.GetExtState( "ReaVolution", "lastOutput" )) or 1000000
+
   local numberOutput = reaper.GetNumAudioOutputs()
+
+  if reaper.GetNumAudioOutputs() > maxHardwareOut then
+    numberOutput = maxHardwareOut
+  end
 
   local frames = 10
   reaper.PreventUIRefresh(-1*frames)
@@ -128,20 +135,25 @@ function main()
       else --IF NOT A MULTIBUS
   
         local streamType, trNumCh = getAudioStream( tr )--getNumberOfChannel( tr )
-        -- Create New Track at idx and get its trackID
-        local idx = reaper.CountTracks(0) + 1
-        reaper.InsertTrackAtIndex(idx, true)
-        local trSend = reaper.GetTrack(0, idx-1)
-        reaper.SetMediaTrackInfo_Value(trSend, 'I_PERFFLAGS', 2 ) --set perf
-        -- Set New Track Name
-        local trSendName = trName.." tr"..i.." ToSpat"
-        reaper.GetSetMediaTrackInfo_String(trSend, "P_NAME", trSendName, true)
-        -- Set tag and track number of channel
-        reaper.SetMediaTrackInfo_Value( trSend, "I_NCHAN", trNumCh)
-        if pathTheme == "ReaVolutionTheme.ReaperTheme" then 
-          reaper.BR_SetMediaTrackLayouts(trSend, "B", "B" )
+
+        local trSend = tr
+
+        if createNewObjectTracks == true then
+          -- Create New Track at idx and get its trackID
+          local idx = reaper.CountTracks(0)
+          reaper.InsertTrackAtIndex(idx+1, true)
+          trSend = reaper.GetTrack(0, idx)
+          reaper.SetMediaTrackInfo_Value(trSend, 'I_PERFFLAGS', 2 ) --set perf
+          -- Set New Track Name
+          local trSendName = trName.." tr"..i.." ToSpat"
+          reaper.GetSetMediaTrackInfo_String(trSend, "P_NAME", trSendName, true)
+          -- Set tag and track number of channel
+          reaper.SetMediaTrackInfo_Value( trSend, "I_NCHAN", trNumCh)
+          if pathTheme == "ReaVolutionTheme.ReaperTheme" then 
+            reaper.BR_SetMediaTrackLayouts(trSend, "B", "B" )
+          end
+          setAudioStream( trSend, streamType, trNumCh )
         end
-        setAudioStream( trSend, streamType, trNumCh )
 
         local currCh = 0
         for j=0, trNumCh-1 do

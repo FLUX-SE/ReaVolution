@@ -15,7 +15,7 @@ loadfile(libPath .. "reaVolutionLib.lua")()
 
 ::restart::
 
-local firstOutput = reaper.GetExtState("ReaVolution","firstOutput") or getNextAvailableHardwareOut() or 0
+local firstOutput =reaper.GetExtState("ReaVolution","firstOutput") or getNextAvailableHardwareOut() or 0
 local lastOutput = reaper.GetExtState("ReaVolution","lastOutput") or reaper.GetNumAudioOutputs()
 local answerTable = {}
 
@@ -38,6 +38,6 @@ if retval then
         goto restart
     end
 
-    reaper.SetExtState("ReaVolution", "firstOutput", answerTable[0], true)
-    reaper.SetExtState("ReaVolution", "lastOutput", answerTable[1], true)
+    reaper.SetExtState("ReaVolution", "firstOutput", answerTable[0]-1, true)
+    reaper.SetExtState("ReaVolution", "lastOutput", answerTable[1]-1, true)
 end

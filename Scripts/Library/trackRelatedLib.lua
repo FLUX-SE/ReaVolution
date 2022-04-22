@@ -367,6 +367,7 @@ function getNextAvailableHardwareOut()
   local arr = {}
   local proj = 0
   local trNumber = reaper.CountTracks( proj )
+  local minOutput = tonumber(reaper.GetExtState( "ReaVolution", "firstOutput" )) or 0
 
   local mstTrack = reaper.GetMasterTrack( 0 )
   local numHwOutMst = reaper.GetTrackNumSends( mstTrack, 1 )
@@ -401,7 +402,11 @@ function getNextAvailableHardwareOut()
 
   table.sort( arr )
 
-  return arr[#arr]
+  if minOutput > arr[#arr] then
+    return minOutput
+  else
+    return arr[#arr]
+  end
 
 end
 
