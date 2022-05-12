@@ -24,23 +24,31 @@ function main()
     if tr then 
       _, srcName = reaper.GetTrackName ( tr )
       local srcStream, srcCh = getAudioStream( tr )
+      local trSrcCh = reaper.GetMediaTrackInfo_Value( tr, 'I_NCHAN' )
 
       reaper.InsertTrackAtIndex( reaper.GetNumTracks(0), true )
       dstTr =  reaper.CSurf_TrackFromID( reaper.GetNumTracks(0), false )
       setAudioStream( dstTr, srcStream, srcCh )
+
+      local newName = "From"..' '..srcName
+      reaper.GetSetMediaTrackInfo_String( dstTr, 'P_NAME', newName ,true)
       
-      sendId = reaper.CreateTrackSend( tr, dstTr)
-      if sendId >= 0 then
-        newName = "From"..' '..srcName
-        if dstTr then
-          reaper.GetSetMediaTrackInfo_String( dstTr, 'P_NAME', newName ,true)
-          reaper.SetTrackSendInfo_Value( tr, 0, sendId, 'I_SENDMODE', 0)
-          table.insert( arr, dstTr )
+      local currCh = 0
+      for j=0, trSrcCh-1, 2 do
+
+        local sendId = reaper.CreateTrackSend(tr, dstTr)
+        if sendId >= 0 then
+          reaper.SetTrackSendInfo_Value(tr, 0, sendId, 'I_SENDMODE', 0)
+          reaper.SetTrackSendInfo_Value(tr, 0, sendId, 'I_SRCCHAN', currCh) --add 1024 to access to mono channels
+          reaper.SetTrackSendInfo_Value(tr, 0, sendId, 'I_DSTCHAN', j) --add 1024 to access to mono channels
+          
+          currCh = currCh + 2
         end
       end
     end
     reaper.TrackList_AdjustWindows( false )
   end
+
   reaper.Main_OnCommand( 40297, 0 ) --unselect all tracks
   selectTracksFromArray( arr )
   reaper.PreventUIRefresh(frame)
