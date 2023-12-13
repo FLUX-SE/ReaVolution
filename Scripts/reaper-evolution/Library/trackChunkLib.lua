@@ -1,7 +1,6 @@
---Script Name : trackChunkLib
---Author : Jean Loup Pecquais
---Description : Handle track chunk
---v1.0.0
+--@author FLUX::
+--@description Handle track chunk
+--@version 23.12.0
 
 local chunkParamTable = 
 {

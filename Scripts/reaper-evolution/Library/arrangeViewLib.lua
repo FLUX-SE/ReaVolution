@@ -1,7 +1,6 @@
---Script Name : arrangeViewLib.lua
---Author : Jean Loup Pecquais
---Description : Library for arrange view
---v1.0.0
+--@author FLUX::
+--@description Library for arrange view
+--@version 23.12.0
 
 function timeSelectionExist()
 	starttime, endtime = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)

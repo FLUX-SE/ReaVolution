@@ -1,7 +1,6 @@
---Script Name : insert HOA 3D track
---Author : Jean Loup Pecquais
---Description : insert HOA 3D track
---v1.0.0
+--@author FLUX::
+--@description insert HOA 3D track
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then
@@ -33,7 +32,7 @@ function main()
 			end
 		end
 
-		local chNum = getHOA3DCh( order )
+		local chNum = getHOA2DCh( order )
 
 	
 		local numTr = reaper.CountTracks(0)

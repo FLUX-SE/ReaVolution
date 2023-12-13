@@ -1,7 +1,6 @@
---Script Name : Receive from Spat Revolution
---Author : Jean Loup Pecquais
---Description : Receive signal from Spat Revolution.
---v1.0.0
+--@author FLUX::
+--@description Receive from Spat Revolution
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then
@@ -10,6 +9,8 @@ if not libPath or libPath == "" then
 end
 
 loadfile(libPath .. "reaVolutionLib.lua")()
+
+local denormalize_NumberOfSpeaker = 1/63
 
 function main()
 
@@ -21,14 +22,14 @@ function main()
       local overrideState =  tonumber(reaper.GetExtState( "ReaVolution", "Default override" ))
 
       reaper.SetMediaTrackInfo_Value( tr, "I_NCHAN", trNumCh)
-      local spatReturn = reaper.TrackFX_AddByName(tr, "Spat Revolution - Return", false, -1)
-      reaper.TrackFX_SetParamNormalized(tr, spatReturn, 7, (trNumCh-1)*0.015625)
+      local spatReturn = reaper.TrackFX_AddByName(tr, "VST2:Spat Revolution - Return", false, -1)
+      reaper.TrackFX_SetParamNormalized(tr, spatReturn, 9, (trNumCh-1)*denormalize_NumberOfSpeaker)
 
       if lapState == 1 then
-        reaper.TrackFX_SetParamNormalized(tr, spatReturn, 3, 1)
+        reaper.TrackFX_SetParamNormalized(tr, spatReturn, 5, 1)
       end
       if overrideState == 0 then
-        reaper.TrackFX_SetParamNormalized(tr, spatReturn, 4, 0)
+        reaper.TrackFX_SetParamNormalized(tr, spatReturn, 6, 0)
       end
 
       reaper.SetMediaTrackInfo_Value(tr, 'B_SHOWINTCP', 0 )

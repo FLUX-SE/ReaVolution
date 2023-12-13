@@ -1,7 +1,6 @@
---Script Name : spatRevolutionLib
---Author : Jean Loup Pecquais
---Description : Spat Revolution related library
---v1.0.0
+--@author FLUX::
+--@description Spat Revolution related library
+--@version 23.12.0
 
 function getSpatTrackID(filter)
   local trackArr = {}

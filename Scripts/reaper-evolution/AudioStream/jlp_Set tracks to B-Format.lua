@@ -1,7 +1,6 @@
---Script Name : set tracks to B-Format
---Author : Jean Loup Pecquais
---Description : Use audio stream to set track to B-Format
---v1.0.0
+--@author FLUX::
+--@description set tracks to B-Format
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

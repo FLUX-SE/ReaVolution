@@ -1,7 +1,6 @@
---Script Name : markerLib.lua
---Author : Jean Loup Pecquais
---Description : General marker lib
---v1.0.0
+--@author FLUX::
+--@description General marker lib
+--@version 23.12.0
 
 function getNextMarker()
     local numMark = reaper.CountProjectMarkers(0)

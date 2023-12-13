@@ -1,7 +1,6 @@
---Script Name : insert channel based track
---Author : Jean Loup Pecquais
---Description : insert channel based track
---v1.0.0
+--@author FLUX::
+--@description insert channel based track
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

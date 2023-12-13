@@ -1,7 +1,6 @@
---Script Name : insert mono track
---Author : Jean Loup Pecquais
---Description : insert mono track
---v1.0.0
+--@author FLUX::
+--@description insert mono track
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

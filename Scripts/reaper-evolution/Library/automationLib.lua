@@ -1,7 +1,6 @@
---Script Name : automationLib
---Author : Jean Loup Pecquais
---Description : Automation related library
---v1.0.0
+--@author FLUX::
+--@description Automation related library
+--@version 23.12.0
 
 automMode = {"Trim/Read","Read", "Touch", "Write", "Latch", "Latch preview"}
 

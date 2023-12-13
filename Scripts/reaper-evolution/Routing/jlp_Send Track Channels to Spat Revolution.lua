@@ -1,7 +1,6 @@
---Script Name : Send track channels to Spat Revolution
---Author : Jean Loup Pecquais
---Description : This script send the selected tracks to Spat Revolution.
---v1.0.0
+--@author FLUX::
+--@description Send track channels to Spat Revolution
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then
@@ -11,6 +10,11 @@ end
 
 loadfile(libPath .. "reaVolutionLib.lua")()
 
+local parameterLap = 52
+local parameterThru = 53
+local parameterNumberOfChannel = 58
+local denormalize_NumberOfSpeaker = 1/63
+
 function main()
   -- count selected track
   reaper.Undo_BeginBlock()
@@ -19,7 +23,6 @@ function main()
   local thruState =  tonumber(reaper.GetExtState( "ReaVolution", "Default thru" ))
   local autoOutState =  tonumber(reaper.GetExtState( "ReaVolution", "Automatic routing" ))
   local masterSendState =  tonumber(reaper.GetExtState( "ReaVolution", "Send_No master send" ))
-  local createNewObjectTracks = tonumber(reaper.GetExtState( "ReaVolution", "Send_CreateObjectTracks" ))
 
   local noMoreHardware = 0
 
@@ -27,13 +30,7 @@ function main()
   local _, pathTheme, _ = parseFilePath(pathTheme)
   
   local hardwareOut = getNextAvailableHardwareOut() or 0
-  local maxHardwareOut = tonumber(reaper.GetExtState( "ReaVolution", "lastOutput" )) or 1000000
-
   local numberOutput = reaper.GetNumAudioOutputs()
-
-  if reaper.GetNumAudioOutputs() > maxHardwareOut then
-    numberOutput = maxHardwareOut
-  end
 
   local frames = 10
   reaper.PreventUIRefresh(-1*frames)
@@ -115,14 +112,14 @@ function main()
             reaper.SetMediaTrackInfo_Value( trSend, "B_MAINSEND", 0)
           end
             local spatSendFX = reaper.TrackFX_AddByName(trSend, "Spat Revolution - Send", false, -1)
-          reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 57, (childNumCh-1)*0.015625)
-          sleep(0.1)
-          if lapState == 1 then
-            reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 51, 1)  
-          end
-          if thruState == 0 then
-            reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 52, 0)
-          end  
+            sleep(0.1)
+            if lapState == 1 then
+              reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterLap, 1)  
+            end
+            if thruState == 0 then
+              reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterThru, 0)
+            end  
+            reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterNumberOfChannel, (childNumCh-1)*denormalize_NumberOfSpeaker)
 
           local returnID = getSpatTrackID('Return')
           if returnID then
@@ -135,25 +132,20 @@ function main()
       else --IF NOT A MULTIBUS
   
         local streamType, trNumCh = getAudioStream( tr )--getNumberOfChannel( tr )
-
-        local trSend = tr
-
-        if createNewObjectTracks == true then
-          -- Create New Track at idx and get its trackID
-          local idx = reaper.CountTracks(0)
-          reaper.InsertTrackAtIndex(idx+1, true)
-          trSend = reaper.GetTrack(0, idx)
-          reaper.SetMediaTrackInfo_Value(trSend, 'I_PERFFLAGS', 2 ) --set perf
-          -- Set New Track Name
-          local trSendName = trName.." tr"..i.." ToSpat"
-          reaper.GetSetMediaTrackInfo_String(trSend, "P_NAME", trSendName, true)
-          -- Set tag and track number of channel
-          reaper.SetMediaTrackInfo_Value( trSend, "I_NCHAN", trNumCh)
-          if pathTheme == "ReaVolutionTheme.ReaperTheme" then 
-            reaper.BR_SetMediaTrackLayouts(trSend, "B", "B" )
-          end
-          setAudioStream( trSend, streamType, trNumCh )
+        -- Create New Track at idx and get its trackID
+        local idx = reaper.CountTracks(0) + 1
+        reaper.InsertTrackAtIndex(idx, true)
+        local trSend = reaper.GetTrack(0, idx-1)
+        reaper.SetMediaTrackInfo_Value(trSend, 'I_PERFFLAGS', 2 ) --set perf
+        -- Set New Track Name
+        local trSendName = trName.." tr"..i.." ToSpat"
+        reaper.GetSetMediaTrackInfo_String(trSend, "P_NAME", trSendName, true)
+        -- Set tag and track number of channel
+        reaper.SetMediaTrackInfo_Value( trSend, "I_NCHAN", trNumCh)
+        if pathTheme == "ReaVolutionTheme.ReaperTheme" then 
+          reaper.BR_SetMediaTrackLayouts(trSend, "B", "B" )
         end
+        setAudioStream( trSend, streamType, trNumCh )
 
         local currCh = 0
         for j=0, trNumCh-1 do
@@ -181,15 +173,15 @@ function main()
         if masterSendState == 0 then
           reaper.SetMediaTrackInfo_Value( trSend, "B_MAINSEND", 0)
         end
-        local spatSendFX = reaper.TrackFX_AddByName(trSend, "Spat Revolution - Send", false, -1)
-        reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 57, (trNumCh-1)*0.015625)
+        local spatSendFX = reaper.TrackFX_AddByName(trSend, "VST2:Spat Revolution - Send", false, -1)
         sleep(0.1)
         if lapState == 1 then
-          reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 51, 1)
+          reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterLap, 1)
         end
         if thruState == 0 then
-          reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, 52, 0)
+          reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterThru, 0)
         end
+        reaper.TrackFX_SetParamNormalized(trSend, spatSendFX, parameterNumberOfChannel, (trNumCh-1)*denormalize_NumberOfSpeaker)
   
         local returnID = getSpatTrackID('Return')
         if returnID then

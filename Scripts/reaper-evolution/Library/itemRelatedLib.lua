@@ -1,7 +1,6 @@
---Script Name : itemRelatedLib.lua
---Author : Jean Loup Pecquais
---Description : functions for manipulating items
---v1.0.0
+--@author FLUX::
+--@description functions for manipulating items
+--@version 23.12.0
 
 function getItemsFromGroup( refGroup )
     local itemArr = {}

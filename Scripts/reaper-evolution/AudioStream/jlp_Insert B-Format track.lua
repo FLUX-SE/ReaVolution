@@ -1,7 +1,6 @@
---Script Name : insert B-Format track
---Author : Jean Loup Pecquais
---Description : insert B-Format track
---v1.0.0
+--@author FLUX::
+--@description insert B-Format track
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

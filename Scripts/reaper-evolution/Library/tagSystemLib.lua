@@ -1,7 +1,6 @@
---Script Name : tagSystemLib.lua
---Author : Jean Loup Pecquais
---Description : ReaVolution tag system lib
---v1.0.0
+--@author FLUX::
+--@description ReaVolution tag system lib
+--@version 23.12.0
 
 local resourcePath = reaper.GetResourcePath()
 
@@ -36,8 +35,7 @@ function getHOA2DCh( input )
 	local input = tonumber(input)
 	if input < 1 then input = 1
 	elseif input > 7 then input = 7 end
-	local ch = 2*input
-	ch = ch+1
+		ch = 2*input+1
 	return ch
 end
 
@@ -45,8 +43,8 @@ function getHOA3DCh( input )
 	local input = tonumber(input)
 	if input < 1 then input = 1
 	elseif input > 7 then input = 7 end
-	local ch = input+1
-	ch = ch * ch
+		ch = input+1
+		ch = ch * ch
 	return ch
 end
 

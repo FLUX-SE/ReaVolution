@@ -1,7 +1,6 @@
---Script Name : jlp_SpatRevo_Route Spat Send tracks to free hardware outputs.lua
---Author : Jean Loup Pecquais
---Description : SpatRevo_Route Spat Send tracks to free hardware outputs
---v1.0.0
+--@author FLUX::
+--@description SpatRevo_Route Spat Send tracks to free hardware outputs
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

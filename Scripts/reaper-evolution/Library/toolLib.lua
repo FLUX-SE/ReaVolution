@@ -1,7 +1,6 @@
---Script Name : toolLib.lua
---Author : Jean Loup Pecquais
---Description : General toolset lib
---v1.0.0
+--@author FLUX::
+--@description General toolset lib
+--@version 23.12.0
 
 function print(value)
 

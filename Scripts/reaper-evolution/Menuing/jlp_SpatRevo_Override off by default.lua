@@ -1,7 +1,6 @@
---Script Name : jlp_SpatRevo_Thru off by default.lua
---Author : Jean Loup Pecquais
---Description : Thru off by default
---v1.0.0
+--@author FLUX::
+--@description Override off by default
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

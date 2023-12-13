@@ -1,7 +1,6 @@
---Script Name : testLib.lua
---Author : Jean Loup Pecquais
---Description : Master ReaVolution library file
---v1.0.0
+--@author FLUX::
+--@description Master ReaVolution library file
+--@version 23.12.0
 
 
 local args = {...}

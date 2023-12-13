@@ -1,7 +1,6 @@
---Script Name : envelopLib.lua
---Author : Jean Loup Pecquais
---Description : function for envelop handling
---v1.0.0
+--@author FLUX::
+--@description function for envelop handling
+--@version 23.12.0
 
 function CountSelectedAutomationItems()
 

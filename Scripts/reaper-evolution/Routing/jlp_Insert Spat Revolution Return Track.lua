@@ -1,7 +1,6 @@
---Script Name : Insert Spat Revolution Return Track
---Author : Jean Loup Pecquais
---Description : Create a track to receive signal from Spat.
---v1.0.0
+--@author FLUX::
+--@description Insert Spat Revolution Return Track
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

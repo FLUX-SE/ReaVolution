@@ -1,7 +1,6 @@
---Script Name : projectLib.lua
---Author : Jean Loup Pecquais
---Description : Function related to project manipulation
---v1.0.0
+--@author FLUX::
+--@description Function related to project manipulation
+--@version 23.12.0
 
 function countProjects()
 

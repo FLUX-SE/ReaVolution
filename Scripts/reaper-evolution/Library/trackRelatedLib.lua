@@ -1,7 +1,6 @@
---Script Name : trackRelated.lua
---Author : Jean Loup Pecquais
---Description : Track related library
---v1.0.0
+--@author FLUX::
+--@description Track related library
+--@version 23.12.0
 
 function getTacksAverageColor(selTr)
 
@@ -367,7 +366,6 @@ function getNextAvailableHardwareOut()
   local arr = {}
   local proj = 0
   local trNumber = reaper.CountTracks( proj )
-  local minOutput = tonumber(reaper.GetExtState( "ReaVolution", "firstOutput" )) or 0
 
   local mstTrack = reaper.GetMasterTrack( 0 )
   local numHwOutMst = reaper.GetTrackNumSends( mstTrack, 1 )
@@ -402,11 +400,7 @@ function getNextAvailableHardwareOut()
 
   table.sort( arr )
 
-  if minOutput > arr[#arr] then
-    return minOutput
-  else
-    return arr[#arr]
-  end
+  return arr[#arr]
 
 end
 

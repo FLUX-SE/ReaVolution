@@ -1,7 +1,6 @@
---Script Name : jlp_SpatRevo_LAP On by default.lua
---Author : Jean Loup Pecquais
---Description : SpatRevo_LAP On by default
---v1.0.0
+--@author FLUX::
+--@description SpatRevo_LAP On by default
+--@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")
 if not libPath or libPath == "" then

@@ -1,7 +1,6 @@
---Script Name : ddpLib
---Author : Jean Loup Pecquais
---Description : DDP related library
---v1.0.0
+--@author FLUX::
+--@description DDP related library
+--@version 23.12.0
 
 function addTag(value, tag, isError, separator)
   if value == nil or value == "" then
