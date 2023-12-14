@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description functions for manipulating items
 --@version 23.12.0
 
 function getItemsFromGroup( refGroup )

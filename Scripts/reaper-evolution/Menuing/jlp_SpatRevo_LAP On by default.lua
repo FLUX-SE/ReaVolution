@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description SpatRevo_LAP On by default
 --@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")

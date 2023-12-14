@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description ReaVolution tag system lib
 --@version 23.12.0
 
 local resourcePath = reaper.GetResourcePath()

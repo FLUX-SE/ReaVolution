@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description insert stereo track
 --@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")

@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Track related library
 --@version 23.12.0
 
 function getTacksAverageColor(selTr)

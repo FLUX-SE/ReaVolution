@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Handle track chunk
 --@version 23.12.0
 
 local chunkParamTable = 

@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Function related to project manipulation
 --@version 23.12.0
 
 function countProjects()

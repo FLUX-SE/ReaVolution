@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description DDP related library
 --@version 23.12.0
 
 function addTag(value, tag, isError, separator)

@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description SpatRevo_Route Spat Send tracks to free hardware outputs
 --@version 23.12.0
 
 local libPath = reaper.GetExtState("Reaper Evolution", "libPath")

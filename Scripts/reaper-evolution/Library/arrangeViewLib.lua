@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Library for arrange view
 --@version 23.12.0
 
 function timeSelectionExist()

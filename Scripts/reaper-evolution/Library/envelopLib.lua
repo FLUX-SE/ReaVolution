@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description function for envelop handling
 --@version 23.12.0
 
 function CountSelectedAutomationItems()

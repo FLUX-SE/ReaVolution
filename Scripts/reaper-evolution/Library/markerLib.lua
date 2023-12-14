@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description General marker lib
 --@version 23.12.0
 
 function getNextMarker()

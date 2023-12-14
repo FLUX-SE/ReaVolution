@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Spat Revolution related library
 --@version 23.12.0
 
 function getSpatTrackID(filter)

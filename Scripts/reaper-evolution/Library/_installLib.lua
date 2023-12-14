@@ -1,5 +1,5 @@
+--@noindex
 --@author FLUX::
---@description Set the path to Reaper Evolution library. Method comes from Scythe GUI lib.
 --@version 23.12.0
 
 local info = debug.getinfo(1,'S')
