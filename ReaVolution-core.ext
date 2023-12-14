@@ -3,8 +3,10 @@
 --@version 23.12.0
 
 @provides
-    [script main=main] Library/_installLib.lua
-    [script main=main] AudioStream/*.lua
-    [script main=main] Menuing/*.lua
-    [script main=main] Routing/*.lua
-    [script] Library/[!_]*.lua
+    [script main=main] Scripts/reaper-evolution/Library/_installLib.lua
+    [script main=main] Scripts/reaper-evolution/AudioStream/*.lua
+    [script main=main] Scripts/reaper-evolution/Menuing/*.lua
+    [script main=main] Scripts/reaper-evolution/Routing/*.lua
+    [script] Scripts/reaper-evolution/Library/[!_]*.lua
+    [jsfx] JSFX/utility/Audio Stream
+    [jsfx] JSFX/utility/X-OR Monitoring
